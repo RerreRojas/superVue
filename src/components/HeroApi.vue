@@ -47,8 +47,7 @@
             <h4 class="card-title">Nombre: {{ heroe.name }}</h4>
 
             <p class="card-text">ID: {{ heroe.id }}.</p>
-            <a @click="showModal(heroe)"
-              style="cursor: pointer;" href="#" class="btn btn-primary">Para saber más</a>
+            <a @click="showModal(heroe)" style="cursor: pointer;" href="#" class="btn btn-primary">Para saber más</a>
           </div>
         </div>
 
@@ -120,9 +119,18 @@ export default {
     },
 
     async setHeroes() {
+
+
+      if (this.heroes.length == 12) {
+
+        return;
+      }
       const heroesResponse = await this.getHeroes();
-      console.log(heroesResponse);
-      this.heroes.push(heroesResponse);
+      const heroRepetido = this.heroes.find(heroe => heroe.id == heroesResponse.id)
+      if (heroRepetido) {return alert("Este héroe ya fue seleccionado");}
+      if (heroesResponse) {
+        this.heroes.push(heroesResponse);
+      }
     },
     eliminarHeroe(index) {
       this.heroes.splice(index, 1);
